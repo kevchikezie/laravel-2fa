@@ -22,7 +22,7 @@ class SettingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function enable2fa(Request $request)
+    public function enable2fa()
     {
     	$google2fa = app('pragmarx.google2fa');
     	$google2faSecret = $google2fa->generateSecretKey();
@@ -36,5 +36,16 @@ class SettingController extends Controller
         \Auth::user()->update(['google2fa_secret' => $google2faSecret]);
 
         return view('register_2fa', ['QrImage' => $QrImage, 'secret' => $google2faSecret]);
+    }
+
+    /**
+     * Disable two factor authentication
+     *
+     */
+    public function disable2fa()
+    {
+    	\Auth::user()->update(['google2fa_secret' => null]);
+
+    	return redirect()->route('settings.index');
     }
 }

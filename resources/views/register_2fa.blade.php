@@ -18,7 +18,7 @@
                     <div class="mb-3">
                         <img src="{{ $QrImage }}">
                     </div>
-                    <form action="#" method="POST">
+                    <form action="{{ route('settings.disable.2fa') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-danger">
                             {{ __('Disable 2FA') }}
