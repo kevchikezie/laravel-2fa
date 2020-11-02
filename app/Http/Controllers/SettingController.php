@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 class SettingController extends Controller
 {
 	/**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+	/**
 	 * Display the settings page for you to enable 2FA
 	 *
 	 * @return \Illuminate\Contracts\Support\Renderable
