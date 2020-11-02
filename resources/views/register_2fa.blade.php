@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Two Factor Authentication</div>
+                <div class="card-header">Set Up Two Factor Authentication</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -13,11 +13,17 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <h5>Set up your two factor authentication</h5>
+                    <h5>You have enabled two factor authentication</h5>
                     <p class="mt-4">Set up your two factor authentication by scanning the barcode below on your authenticator app. Alternatively, you can use  this code <code>{{ $secret }}</code></p>
-                    <div>
+                    <div class="mb-3">
                         <img src="{{ $QrImage }}">
                     </div>
+                    <form action="#" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">
+                            {{ __('Disable 2FA') }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

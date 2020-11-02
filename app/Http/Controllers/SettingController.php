@@ -33,6 +33,8 @@ class SettingController extends Controller
             $google2faSecret
         );
 
+        \Auth::user()->update(['google2fa_secret' => $google2faSecret]);
+
         return view('register_2fa', ['QrImage' => $QrImage, 'secret' => $google2faSecret]);
     }
 }
