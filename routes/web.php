@@ -18,3 +18,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/settings', 'SettingController@index')->name('settings.index');
