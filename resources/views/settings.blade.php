@@ -15,9 +15,12 @@
                     @endif
                     <h5>You have not enabled two factor authentication</h5>
                     <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
-                    <button type="submit" class="btn btn-primary">
-                        {{ __('Enable 2FA') }}
-                    </button>
+                    <form action="{{ route('settings.enable.2fa') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">
+                            {{ __('Enable 2FA') }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

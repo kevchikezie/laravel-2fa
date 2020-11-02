@@ -15,4 +15,24 @@ class SettingController extends Controller
     {
     	return view('settings');
     }
+
+    /**
+     * Enable 2FA on your application
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function enable2fa(Request $request)
+    {
+    	$google2fa = app('pragmarx.google2fa');
+    	$google2faSecret = $google2fa->generateSecretKey();
+
+    	$QrImage = $google2fa->getQRCodeInline(
+            config('app.name'),
+            \Auth::user()->email,
+            $google2faSecret
+        );
+
+        return view('register_2fa', ['QrImage' => $QrImage, 'secret' => $google2faSecret]);
+    }
 }
