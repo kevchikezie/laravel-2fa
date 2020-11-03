@@ -13,14 +13,26 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <h5>You have not enabled two factor authentication</h5>
-                    <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
-                    <form action="{{ route('settings.enable.2fa') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">
-                            {{ __('Enable 2FA') }}
-                        </button>
-                    </form>
+
+                    @if (is_null(\Auth::user()->google2fa_secret))
+                        <h5>You have not enabled two factor authentication</h5>
+                        <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
+                        <form action="{{ route('settings.enable.2fa') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">
+                                {{ __('Enable 2FA') }}
+                            </button>
+                        </form>
+                    @else
+                        <h5>Your two factor authentication is enabled</h5>
+                        <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
+                        <form action="{{ route('settings.disable.2fa') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-danger">
+                                {{ __('Disable 2FA') }}
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
