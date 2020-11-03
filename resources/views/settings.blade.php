@@ -14,16 +14,13 @@
                         </div>
                     @endif
 
-                    @if (is_null(\Auth::user()->google2fa_secret))
+                    {{-- @if (is_null(\Auth::user())) --}}
                         <h5>You have not enabled two factor authentication</h5>
                         <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
-                        <form action="{{ route('settings.enable.2fa') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Enable 2FA') }}
-                            </button>
-                        </form>
-                    @else
+                        <a href="{{ route('settings.generate.2fa') }}" role="button" class="btn btn-primary">
+                            {{ __('Enable 2FA') }}
+                        </a>
+                    {{-- @else
                         <h5>Your two factor authentication is enabled</h5>
                         <p class="mt-4">Add additional security to your account using two factor authentication. You will be asked to enter a secure random token during athentication.</p>
                         <form action="{{ route('settings.disable.2fa') }}" method="POST">
@@ -32,7 +29,7 @@
                                 {{ __('Disable 2FA') }}
                             </button>
                         </form>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
         </div>

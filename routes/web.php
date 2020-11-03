@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/settings', 'SettingController@index')->name('settings.index');
+Route::get('/settings/generate-2fa', 'SettingController@generate2fa')->name('settings.generate.2fa');
 Route::post('/settings/enable-2fa', 'SettingController@enable2fa')->name('settings.enable.2fa');
 Route::post('/settings/disable-2fa', 'SettingController@disable2fa')->name('settings.disable.2fa');
 

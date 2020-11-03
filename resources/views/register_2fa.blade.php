@@ -14,15 +14,25 @@
                         </div>
                     @endif
                     <h5>You have enabled two factor authentication</h5>
-                    <p class="mt-4">Set up your two factor authentication by scanning the barcode below on your authenticator app. Alternatively, you can use  this code <code>{{ $secret }}</code></p>
+                    <p class="mt-4">Set up your two factor authentication by scanning the barcode below on your authenticator app. Alternatively, you can use  this code <code>{{ $data['secret'] }}</code></p>
                     <div class="mb-3">
-                        <img src="{{ $QrImage }}">
+                        <img src="{{ $data['QrImage'] }}">
                     </div>
-                    <form action="{{ route('settings.disable.2fa') }}" method="POST">
+                    <form action="{{ route('settings.enable.2fa') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-danger">
-                            {{ __('Disable 2FA') }}
+                        <div class="form-group row">
+                            <label for="code" class="col-md-12 col-form-label">{{ __('Enter OTP from authenticator app') }}</label>
+                            <div class="col-md-7">
+                                <input id="code" type="text" class="form-control @error('code') is-invalid @enderror" name="code" required autocomplete="off">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="secret" value="{{ $data['secret'] }}">
+
+                        <button type="submit" class="btn btn-primary">
+                            {{ __('Proceed') }}
                         </button>
+
                     </form>
                 </div>
             </div>

@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\TwoFactorAuthenticationService;
 
 class SettingController extends Controller
 {
+	private $twoFactorAuthenticationService;
+
 	/**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TwoFactorAuthenticationService $twoFactorAuthenticationService)
     {
         $this->middleware('auth');
+		$this->twoFactorAuthenticationService = $twoFactorAuthenticationService;
     }
 
 	/**
@@ -27,34 +31,45 @@ class SettingController extends Controller
     }
 
     /**
-     * Enable 2FA on your application
+     * Generate 2FA QR code and secret
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function enable2fa()
+    public function generate2fa()
     {
-    	$google2fa = app('pragmarx.google2fa');
-    	$google2faSecret = $google2fa->generateSecretKey();
+    	$data = $this->twoFactorAuthenticationService->generate();
 
-    	$QrImage = $google2fa->getQRCodeInline(
-            config('app.name'),
-            \Auth::user()->email,
-            $google2faSecret
-        );
+        return view('register_2fa', compact('data'));
+    }
 
-        \Auth::user()->update(['google2fa_secret' => $google2faSecret]);
+    /**
+	 * Enable 2FA for your application
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function enable2fa(Request $request)
+    {
+    	$request->validate([
+            'secret'  => ['required', 'string'],
+            'code' => ['required', 'string'],
+        ]);
 
-        return view('register_2fa', ['QrImage' => $QrImage, 'secret' => $google2faSecret]);
+        if (! $this->twoFactorAuthenticationService->enable($request->toArray())) {
+        	return redirect()->back()->with('error', 'Wrong two factor code! Try again.');
+        }
+
+        return redirect()->route('settings.index');
     }
 
     /**
      * Disable two factor authentication
      *
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function disable2fa()
     {
-    	\Auth::user()->update(['google2fa_secret' => null]);
+    	$this->twoFactorAuthenticationService->disable();
 
     	return redirect()->route('settings.index');
     }
