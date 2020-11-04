@@ -56,6 +56,6 @@ class User extends Authenticatable
      */
     public function getGoogle2faSecretAttribute($value)
     {
-        return decrypt($value);
+        return ! is_null($value) ? decrypt($value) : null;
     }
 }

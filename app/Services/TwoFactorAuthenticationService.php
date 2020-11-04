@@ -47,6 +47,6 @@ class TwoFactorAuthenticationService
 	 */
 	public function disable()
 	{
-		\Auth::user()->update(['google2fa_secret' => $data['secret']]);
+		\Auth::user()->update(['google2fa_secret' => null]);
 	}
 }
